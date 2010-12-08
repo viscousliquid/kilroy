@@ -1,0 +1,22 @@
+
+h1("Configuration")
+
+div do
+  table.config! do
+  end
+  img.add_room! :src => "/images/collapse_plus.png"
+end
+
+script do
+  <<-end_script
+    // execute your scripts when DOM is ready. this is a good habit
+    $(function() {    
+      getConfiguration("#config");
+      
+      $("#add_room").click(function () {
+        addConfigurationField("#config");
+      });
+    });
+  end_script
+end
+

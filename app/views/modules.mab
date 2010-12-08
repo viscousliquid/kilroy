@@ -1,0 +1,34 @@
+
+h1("Modules")
+
+div :class => 'scrollable vertical' do
+  div.items do
+  end
+end
+
+form do
+  div do
+    span.description! do
+    end
+    span.status! do
+    end
+  end
+  code.editor! do
+  end
+end
+
+script do
+  <<-end_script
+    // execute your scripts when DOM is ready. this is a good habit
+    $(function() {    
+      getModuleList(".items");
+        
+      // initialize scrollable with mousewheel support
+      $(".scrollable").scrollable({ vertical: true, mousewheel: true });  
+      
+      $("#description").editable('text');
+      $("#editor").editable('textarea');
+    });
+  end_script
+end
+

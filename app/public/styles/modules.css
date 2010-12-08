@@ -1,0 +1,17 @@
+
+.scrollable {
+  float:left;
+  padding:0px 25px 0px;
+  height:600px;
+  width:100px;
+}
+
+.items {
+  font-size:larger;
+  font-weight:bold;
+}
+
+.editable {
+  background-color:#f0ffff;
+  cursor:pointer;
+}

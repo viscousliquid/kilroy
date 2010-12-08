@@ -1,0 +1,45 @@
+
+h1("Log Search")
+
+form do
+  div.clear do
+    p.label "Query:" 
+    input :type => 'text', :name => 'query'
+  end
+
+  div.clear do
+    p.label "Room:"
+
+    select :id => "room_list", :name => "room" do
+      option "all"
+    end
+  end
+  
+  span.button :id => "im_button" do
+    "Search IM"
+  end
+
+  span.button :id => "chat_button" do
+    "Search Chat"
+  end
+end
+
+script do
+  <<-end_script
+    // execute your scripts when DOM is ready. this is a good habit
+    $(function() {    
+      getRoomList("#room_list",'option');
+      $("#im_button").click( function() {
+        $('form').append('<input type="hidden" id="type" name="type" value="im" />');
+        $('form').submit();
+      });
+      $('form').submit( function(evt) {
+        evt.preventDefault();
+        $.post('/data/logs', $(this).serialize(), function(data) {
+          $("#type").remove();
+          alert(data);
+        }, "json");
+      });
+    });
+  end_script
+end

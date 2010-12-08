@@ -1,0 +1,55 @@
+body {
+  background-image: url(/images/pattern_28.gif);
+  background-repeat: repeat;
+  text-align: center;
+}
+.page {
+  width: 800px;
+  font-size: 12px;
+  background-color: #ffffff;
+  border-style: solid;
+  margin: 0 auto;
+  text-align: left;
+}
+.column {
+  position: relative;
+  top: -110px;
+}
+.headerleft {
+  float: left;
+  text-align: center;
+  width: 350px;
+}
+.headerright {
+  float: right;
+  text-align: center;
+  width: 350px;
+}
+.clear {
+  clear: both;
+}
+.nav {
+  font-weight: bold;
+  background-color: #e3e3e3;
+  text-align: center;
+  margin-top: 35px;
+  padding: 5px;
+  width: 790px;
+}
+
+.content {
+  padding: 10px;
+}
+
+.label {
+  float: left;
+  margin: 5px;
+}
+
+.button {
+  border:medium outset;
+  font-weight:bold;
+  margin:5px;
+  padding:2px;
+  width:-moz-fit-content;
+}

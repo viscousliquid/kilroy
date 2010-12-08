@@ -1,0 +1,16 @@
+
+h1("Configuration")
+
+div.status! do
+end
+
+script do
+  <<-end_script
+    // execute your scripts when DOM is ready. this is a good habit
+    $(function() {    
+      getStatus("#status");
+        
+    });
+  end_script
+end
+

@@ -1,0 +1,37 @@
+html do
+  head do
+    title 'Kilroy Bot Mangement'
+    link :rel => "shortcut icon", :type => "image/png", :href => "/favicon.png"
+    link :rel => "stylesheet", :type => "text/css", :href => "/styles/single_column.css"
+    link :rel => "stylesheet", :type => "text/css", :href => "/styles/modules.css"
+    script :src => "/scripts/jquery.tools.min.js" do
+    end
+    script :src => "/scripts/jquery.editable.js" do
+    end
+    script :src => "/scripts/functions.js" do
+    end
+  end
+  body do
+    div.page do
+      img :src => '/images/kilroy.png'
+      div.column do
+        div.headerleft do
+          h1("Kilroy")
+        end
+        div.headerright do
+          h1("The XMPP Bot")
+        end
+        div.clear do
+        end
+        div.nav do
+          [ "Home", "Status", "Configuration", "Modules", "Logs"].map do |component|
+            a component, :href => "/view/#{component.downcase}/"
+          end.join(" | ")
+        end
+        div.content do
+          yield
+        end
+      end
+    end
+  end
+end

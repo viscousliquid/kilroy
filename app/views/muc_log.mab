@@ -1,0 +1,9 @@
+table do
+  @bot.recorder.get_muc(@params[:room],@params[:start],@params[:count]).each do |r|
+    tr do
+      td r.time
+      td r.jid
+      td r.message
+    end
+  end
+end

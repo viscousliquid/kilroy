@@ -1,0 +1,9 @@
+table do
+  @bot.recorder.get_im(@params[:start],@params[:count]).each do |r|
+    tr do
+      td r.time.httpdate
+      td r.jid
+      td r.message
+    end
+  end
+end

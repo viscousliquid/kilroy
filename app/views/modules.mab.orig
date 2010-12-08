@@ -1,0 +1,46 @@
+
+h1("Modules")
+
+div.listNav :id => 'moduleList-nav' do
+end
+ul.moduleList! do
+  @modules.each do |m|
+    li do
+      a.click :href => '#' do
+        m.name.capitalize
+      end
+    end
+  end
+end
+
+code.editor! do
+end
+
+#form.editor! do
+#  div.clear do
+#    p.label ""
+#    textarea :cols => 80, :rows => 25 do
+#     "" 
+#    end
+#  end 
+#end
+
+script do
+
+<<end_script
+  $(document).ready(function() {
+    $('#moduleList').listnav({showCounts: false});
+    $('.click').click(function (event) {
+      event.preventDefault();
+      getModule(this.name, '#editor');
+    });
+  });
+end_script
+
+end
+
+
+#    $('.click').click(function (event) {
+#      event.preventDefault();
+#      getModule(this.name, '#editor');
+#    );
