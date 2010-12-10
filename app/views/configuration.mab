@@ -2,20 +2,142 @@
 h1("Configuration")
 
 div do
-  table.config! do
+  table do
+    tbody do
+      tr do
+        th :colspan => 2 do
+          "Standard Settings"
+        end
+      end
+      tr do
+        td do "JID"; end
+        td.jid! do "&lt;undefined&gt;"; end
+      end
+      tr do
+        td do "Password"; end
+        td.password! do "&lt;undefined&gt;"; end
+      end
+      tr do
+        td do "Certificate"; end
+        td.certificate! do "&lt;undefined&gt;"; end
+      end
+      tr do
+        td do "Command Delimiter"; end
+        td.delim! do "&lt;undefined&gt;"; end
+      end
+    end
   end
-  img.add_room! :src => "/images/collapse_plus.png"
+  table do
+    tbody.config! do
+      tr do
+        th :colspan => 3 do
+          "Extended Settings"
+        end
+      end
+    end
+  end
+  div do
+    span.button :id => "save" do
+      "Save Settings"
+    end
+    img.add_param! :src => "/images/collapse_plus.png"
+  end
 end
 
 script do
   <<-end_script
+    function add(evt) {
+      addConfigurationField("#config");
+    }
+
+    function del(evt) {
+      var p = $(evt.target).parent().parent();
+      var k = $(p).find('.key');
+      
+      $.post('/data/configuration', { 'type':'delete','delete':$(k).text()}, function(data) {
+        if ( data.status == 'success') {
+          $.each($(".extended"), function(i,e) {
+            $(e).remove();
+          });
+          
+          $.each($(".new"), function(i,e) {
+            $(e).remove();
+          });
+          
+          populateConfiguration(data,"#config");
+        } else {
+          // todo: should wipe target first!
+          $("#config").append('<tr><td colspan="3">request '+data.status+': '+data.message+'</td></tr>');
+        }
+      }, "json");
+    }
+
+    function save(evt) {
+      var data = {};
+
+      // Retrieve all the standard settings
+      $.each(['jid','password','certificate','delim'], function(i,key) {
+        var value = $("#"+key).text();
+        data[key] = value;
+      });
+
+      // todo: make sure all extended setting keys are properly formatted, e.g. no spaces.
+
+      // Retrieve all the existing extended settings
+      $.each($(".extended"), function(i,e) {
+        var key = $($(e).find('.key')[0]).text();
+        if ( key != "Setting Name") {
+          var value = $($(e).find('.value')[0]).text();
+          data[key] = value;
+        }
+      });
+      
+      // Retrieve all the new extended settings
+      $.each($(".new"), function(i,e) {
+        var key = $($(e).find('.key')[0]).text();
+        if ( key != "Setting Name") {
+          var value = $($(e).find('.value')[0]).text();
+          data[key] = value;
+        }
+      });
+      
+      $.post('/data/configuration', { 'type':'update','update':data}, function(resp) {
+        if ( resp.status == 'success') {
+          $.each($(".extended"), function(i,e) {
+            $(e).remove();
+          });
+          
+          $.each($(".new"), function(i,e) {
+            $(e).remove();
+          });
+          
+          populateConfiguration(resp,"#config");
+        } else {
+          // todo: should wipe target first!
+          $("#config").append('<tr><td colspan="3">request '+resp.status+': '+resp.message+'</td></tr>');
+        }
+      }, "json");
+    }
+
     // execute your scripts when DOM is ready. this is a good habit
     $(function() {    
       getConfiguration("#config");
       
-      $("#add_room").click(function () {
-        addConfigurationField("#config");
+      $.each(['jid','password','certificate','delim'], function(i,key) {
+        $('#'+key).editable('text');
       });
+
+      $("#add_param").click( add );
+
+      // delete buttons may not be inserted into the DOM by the time we are here
+      // so hook into tbody.config and filter for events.
+      $('#config').click( function(evt) {
+        if ( /delete/.test( $(evt.target).attr('class') ) ) {
+          del(evt);
+        }
+      });
+
+      $("#save").click( save );
     });
   end_script
 end

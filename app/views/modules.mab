@@ -3,29 +3,97 @@ h1("Modules")
 
 div :class => 'scrollable vertical' do
   div.items do
+    div :id=>'new', :class=>'item' do
+      img :src=>'/images/collapse_plus.png'
+    end
   end
 end
 
-form do
-  div do
-    span.description! do
+table do
+  tbody do
+    tr do
+      td.name! do
+      end
     end
-    span.status! do
+    tr do
+      td.description! do
+      end
+      td.status! do
+      end
+    end
+    tr do
+      td.editor! :colspan => 2 do
+      end
     end
   end
-  code.editor! do
+end
+
+div do
+  span.button :id => "save" do
+    "Save Settings"
   end
 end
 
 script do
   <<-end_script
+    function newModule(evt) {
+      $('#name').text("module_name");
+      $('#description').text("Description of your module");
+      $('#status').text("disabled");
+      $('#status').addClass("disabled");
+      $('#editor').text("Code for the module goes here");
+    }
+
+    function toggleStatus(evt) {
+      if ( $("#status").hasClass("disabled") ) {
+        $('#status').text("enabled");
+      } else {
+        $('#status').text("disabled");
+      }
+
+      $('#status').toggleClass("disabled");
+    }
+
+    function save(evt) {
+      var data = {};
+
+      // Retrieve all the standard settings
+      $.each(['name','description','status','editor'], function(i,key) {
+        var value = $("#"+key).text();
+        data[key] = value;
+      });
+
+/*      
+      $.post('/data/configuration', { 'type':'update','update':data}, function(resp) {
+        if ( resp.status == 'success') {
+          $.each($(".extended"), function(i,e) {
+            $(e).remove();
+          });
+          
+          $.each($(".new"), function(i,e) {
+            $(e).remove();
+          });
+          
+          populateConfiguration(resp,"#config");
+        } else {
+          // todo: should wipe target first!
+          $("#config").append('<tr><td colspan="3">request '+resp.status+': '+resp.message+'</td></tr>');
+        }
+      }, "json");
+*/
+    }
+
     // execute your scripts when DOM is ready. this is a good habit
     $(function() {    
       getModuleList(".items");
         
       // initialize scrollable with mousewheel support
       $(".scrollable").scrollable({ vertical: true, mousewheel: true });  
+
+      $("#new").click( newModule );
+      $("#status").click( toggleStatus );
       
+      $("#name").editable('text');
       $("#description").editable('text');
       $("#editor").editable('textarea');
     });

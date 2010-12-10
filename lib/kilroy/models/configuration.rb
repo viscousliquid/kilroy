@@ -22,6 +22,11 @@ module Jabber
             end
             record
           end
+
+          def remove(key)
+            record = self.first(:conditions => {:key => key})
+            record.destroy
+          end
         end
       end
     end

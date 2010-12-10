@@ -37,22 +37,8 @@ function getModule(module,targets) {
 function getConfiguration(target) {
 
   $.post('/data/configuration', { 'type': 'list' }, function(data) {
-    var frag = document.createDocumentFragment();
     if ( data.status == 'success') {
-      $.each(data.content, function(i,item) {
-        var e = document.createElement('tr');
-        var k = document.createElement('td');
-        var v = document.createElement('td');
-        k.innerHTML = i;
-        k.setAttribute('class', 'key');
-        v.innerHTML = item
-        v.setAttribute('class', 'value');
-        $(v).editable('text');
-        e.appendChild(k);
-        e.appendChild(v);
-        frag.appendChild(e);
-      });
-      $(target)[0].appendChild(frag);
+      populateConfiguration(data,target);
     } else {
       // todo: should wipe target first!
       $(target).append('<tr><td>equest '+data.status+': '+data.message+'</td></tr>');
@@ -60,10 +46,38 @@ function getConfiguration(target) {
   }, "json");
 };
 
+function populateConfiguration(data,target) {
+    var frag = document.createDocumentFragment();
+
+    $.each(data.content, function(i,item) {
+      if ( ['jid','password','certificate','delim'].indexOf(i) != -1 ) {
+        $('#'+i).text(item);
+      } else {
+        var e = document.createElement('tr');
+        var k = document.createElement('td');
+        var v = document.createElement('td');
+        var d = document.createElement('td');
+        e.setAttribute('class', 'extended');
+        k.innerHTML = i;
+        k.setAttribute('class', 'key');
+        v.innerHTML = item == "" ? "<undefined>" : item
+        v.setAttribute('class', 'value');
+        $(v).editable('text');
+        d.innerHTML = '<img class="delete img_button" src="/images/deleteIcon.png"/>'
+        e.appendChild(k);
+        e.appendChild(v);
+        e.appendChild(d);
+        frag.appendChild(e);
+      }
+    });
+    $(target)[0].appendChild(frag);
+}
+
 function addConfigurationField(target) {
   var e = document.createElement('tr');
   var k = document.createElement('td');
   var v = document.createElement('td');
+  e.setAttribute('class', 'new');
   k.innerHTML = 'Setting Name';
   k.setAttribute('class', 'key');
   v.innerHTML = 'Setting Value'

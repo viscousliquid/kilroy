@@ -35,6 +35,11 @@ module Jabber
           %w[mod_id name description state body rev_user_id].each { |k|
             record[k] = params.has_key?(k) ? params[k] : self[k]
           }
+
+          if record['mod_id'].nil?
+            (record['mod_id'] = self.maximum("mod_id")).nil? : record['mod_id'] = 1 ? nil
+          end
+
           record.save!
 
           record

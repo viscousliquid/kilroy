@@ -23,6 +23,10 @@ module Jabber
         Configuration.store key, value
       end
 
+      def remove(key)
+        Configuration.remove key
+      end
+
       def to_hash
         values = {}
         Configuration.all.each { |r| values[r.key] = r.value }

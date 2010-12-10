@@ -52,4 +52,10 @@ body {
   margin:5px;
   padding:2px;
   width:-moz-fit-content;
+  cursor: pointer;
 }
+
+.img_button {
+ cursor: pointer;
+}
+

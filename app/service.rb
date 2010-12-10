@@ -2,6 +2,8 @@ require 'kilroy'
 require 'markaby/sinatra'
 require 'json'
 
+require 'pp'
+
 
 Jabber::Bot::Instance = Jabber::Bot::Kilroy.new
 
@@ -51,10 +53,15 @@ post '/data/:view' do
                         :content => Jabber::Bot::Instance.env.to_hash
             }
           when 'update'
-            attrs = JSON.parse(params[:update])
-            attrs.each do |k,v|
+            params[:update].each do |k,v|
               Jabber::Bot::Instance.env[k] = v
             end
+
+            retval = {  :status => 'success',
+                        :content => Jabber::Bot::Instance.env.to_hash
+            }
+          when 'delete'
+            Jabber::Bot::Instance.env.remove params[:delete]
 
             retval = {  :status => 'success',
                         :content => Jabber::Bot::Instance.env.to_hash
@@ -78,13 +85,23 @@ post '/data/:view' do
             }
           when 'update'
             attrs = JSON.parse(params[:update])
-            mod = Jabber::Bot::Models::Module.find(attrs['id'])
+            attrs['rev_user_id'] = @user.nil? ? "nobody" : @user
 
-            retval = {  :status => 'success',
-                        :content => mod.revision(attrs)
-            }
+            if attrs['id'].nil?
+              retval = {  :status => 'success',
+                          :content => mod.revision(attrs)
+              }
+            else
+              mod = Jabber::Bot::Models::Module.find(attrs['id'])
+
+              retval = {  :status => 'success',
+                          :content => mod.revision(attrs)
+              }
+            end
+              
           when 'delete'
             attrs = JSON.parse(params[:update])
+            
             mod = Jabber::Bot::Models::Module.find(attrs['id'])
 
             retval = {  :status => 'success',

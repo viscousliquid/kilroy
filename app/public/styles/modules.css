@@ -15,3 +15,12 @@
   background-color:#f0ffff;
   cursor:pointer;
 }
+
+#status {
+  background-color:green;
+  cursor:pointer;
+}
+
+#status.disabled {
+  background-color:red;
+}

@@ -40,6 +40,8 @@
     $(field).blur(function(){
       applyChanges(obj);
     });
+
+    $(field).focus();
   }
 
   function cleanUp(obj, keepEditable){

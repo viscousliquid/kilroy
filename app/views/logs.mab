@@ -29,10 +29,17 @@ script do
     // execute your scripts when DOM is ready. this is a good habit
     $(function() {    
       getRoomList("#room_list",'option');
+
       $("#im_button").click( function() {
         $('form').append('<input type="hidden" id="type" name="type" value="im" />');
         $('form').submit();
       });
+
+      $("#chat_button").click( function() {
+        $('form').append('<input type="hidden" id="type" name="type" value="muc" />');
+        $('form').submit();
+      });
+
       $('form').submit( function(evt) {
         evt.preventDefault();
         $.post('/data/logs', $(this).serialize(), function(data) {
