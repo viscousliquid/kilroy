@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#export mysql_default_host="host"
+#export mysql_default_user="user"
+#export mysql_default_password="password"
+#export mysql_default_db="database"
+
+SCRIPT_DIR=`dirname $0`
+PARENT_DIR=`cd $SCRIPT_DIR/..; pwd`
+
+/var/lib/gems/1.8/bin/rackup ${PARENT_DIR}/conf/config.ru

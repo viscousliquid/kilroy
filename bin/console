@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+root_dir = File.expand_path(File.dirname(__FILE__) + '/..')
+
+$:.unshift(root_dir + '/lib')
+
+require 'irb'
+require 'irb/completion'
+require 'kilroy'
+
+ARGV.clear
+
+Bot = Jabber::Bot::Kilroy.new
+
+IRB.start
+exit!
+
