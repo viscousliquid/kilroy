@@ -105,7 +105,7 @@ post '/data/:view' do
             mod = Jabber::Bot::Models::Module.find(attrs['id'])
 
             retval = {  :status => 'success',
-                        :content => mod.delete(user)
+                        :content => mod.delete(@user)
             }
           else
             retval = { :status => 'error', :message => "unknown modules flag: #{params[:type]}"}
