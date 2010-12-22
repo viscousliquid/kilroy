@@ -1,0 +1,31 @@
+require 're'
+
+module Rack
+  class SSLIndentity
+   
+    def initialize(app, filters)
+      @app = app
+      unless filters.kind_of Array 
+        @filters = [ Regexp.compile(filters) ]
+      else
+        @filters = filters.map { |f| Regexp.compile(f) }
+      end
+    end
+   
+    def call(env)
+      # populate env["RACK_SSL_IDENTITY"]
+      unless env["SSL_CLIENT_S_DN"].nil?
+        match = ""
+
+        for n in 0..(@filters.size - 1)
+          match = @filters[n].match(env["SSL_CLIENT_S_DN"])
+          break if ! match.nil?
+        end
+
+        env["RACK_SSL_IDENTITY"] = match
+      end
+
+      @app.call(env)
+    end
+  end
+end
