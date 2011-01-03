@@ -7,6 +7,10 @@ require 'pp'
 
 Jabber::Bot::Instance = Jabber::Bot::Kilroy.new
 
+before do
+  @user = Jabber::Bot::Models::User.first(:conditions => {:login => env["RACK_SSL_IDENTITY"]})
+end
+
 get '/' do
   redirect '/view/home/'
 end
